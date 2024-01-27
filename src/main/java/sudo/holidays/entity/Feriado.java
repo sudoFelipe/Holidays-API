@@ -42,15 +42,9 @@ public class Feriado {
 	@Column(name = "DATA_INCLUSAO")
 	private LocalDateTime dataInclusao;
 	
-	@Column(name = "TP_PONTO_FACULTATIVO")
-	private EnumTipoFeriado tipoPontoFacultativo;
-	
-	@Column(name = "FL_EXPED_DIARIO")
-	private EnumExpediente flagExpedienteDiario;
-	
-	@Column(name = "FL_EXPED_BANCARIO")
-	private EnumExpediente flagExpedienteBancario;
-	
 	@Column(name = "TP_FERIADO")
 	private EnumTipoFeriado tipoFeriado;
+
+	@Column(name = "FL_PONTO_FACULTATIVO")
+	private EnumExpediente flagPontoFacultativo;
 }
