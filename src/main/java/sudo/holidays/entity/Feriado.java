@@ -11,15 +11,15 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import lombok.Builder;
 import lombok.Data;
-import sudo.holidays.enums.EnumExpediente;
 import sudo.holidays.enums.EnumTipoFeriado;
 
 @Data
 @Entity
 @Table(name = "Feriado")
+@Builder
 public class Feriado {
 
 	@Id
@@ -46,5 +46,5 @@ public class Feriado {
 	private EnumTipoFeriado tipoFeriado;
 
 	@Column(name = "FL_PONTO_FACULTATIVO")
-	private EnumExpediente flagPontoFacultativo;
+	private boolean flagPontoFacultativo;
 }
