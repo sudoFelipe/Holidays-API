@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import sudo.holidays.client.IbgeClient;
+import sudo.holidays.docs.FeriadoDocumentation;
 import sudo.holidays.dto.FeriadoDTO;
 import sudo.holidays.dto.SocketDTO;
 import sudo.holidays.dto.ibge.UnidadeFederativaDTO;
@@ -17,7 +18,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/holidays")
 @RequiredArgsConstructor
-public class FeriadoController {
+public class FeriadoController extends FeriadoDocumentation {
 
 	private final FeriadoServiceImp feriadoService;
 	private final FeriadoConverter converter;
