@@ -7,6 +7,7 @@ import sudo.holidays.entity.Feriado;
 import sudo.holidays.implementation.UsuarioServiceImp;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -46,5 +47,11 @@ public class FeriadoConverter {
                 .tipoFeriado(retorno.getTipoFeriado())
                 .flagPontoFacultativo(retorno.isFlagPontoFacultativo())
                 .build();
+    }
+
+    public List<FeriadoDTO> toFeriadoDTO(List<Feriado> feriados) {
+        return feriados.stream()
+                .map(this::toFeriadoDTO)
+                .toList();
     }
 }

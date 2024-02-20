@@ -11,10 +11,9 @@ import sudo.holidays.repository.FeriadoRepository;
 import sudo.holidays.service.FeriadoService;
 
 import java.time.LocalDate;
+import java.time.Month;
+import java.time.Year;
 import java.util.List;
-import java.util.Optional;
-
-import static java.util.Optional.ofNullable;
 
 @Service
 @RequiredArgsConstructor
@@ -71,11 +70,25 @@ public class FeriadoServiceImp implements FeriadoService {
                 .toList();
     }
 
+    public List<FeriadoDTO> obterFeriadosPorAno(Integer ano) {
+
+        final var feriados = buscarFeriadosDTOPorAno(ano);
+
+        if (feriados.isEmpty())
+            throw new FeriadoNotFoundException();
+
+        return converter.toFeriadoDTO(feriados);
+    }
+
     private List<Feriado> buscarFeriadosDTO() {
         return this.repository.findAll(Sort.by(Sort.Direction.DESC, "dataFeriado"));
     }
 
-//    public FeriadoDTO obterFeriadoPorAno(Integer anoFeriado) {
-//
-//    }
+    private List<Feriado> buscarFeriadosDTOPorAno(Integer year) {
+
+        final var dataInicial = LocalDate.of(year, Month.JANUARY, LocalDate.MIN.getDayOfMonth());
+        final var dataFinal = LocalDate.of(year, Month.DECEMBER, LocalDate.MAX.getDayOfMonth());
+
+        return this.repository.findByPeriod(dataInicial, dataFinal);
+    }
 }

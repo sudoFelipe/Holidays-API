@@ -1,6 +1,5 @@
 package sudo.holidays.controller;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -12,11 +11,12 @@ import sudo.holidays.converter.FeriadoConverter;
 import sudo.holidays.docs.FeriadoDocumentation;
 import sudo.holidays.dto.FeriadoDTO;
 import sudo.holidays.dto.SocketDTO;
-import sudo.holidays.enums.EnumTipoFeriado;
+import sudo.holidays.entity.Feriado;
 import sudo.holidays.implementation.FeriadoServiceImp;
 import sudo.holidays.service.SocketService;
 
 import java.time.LocalDate;
+import java.time.Month;
 import java.util.List;
 
 @RestController
@@ -54,25 +54,49 @@ public class FeriadoController extends FeriadoDocumentation {
 	}
 
 	@GetMapping("/{idFeriado}")
-	public FeriadoDTO recuperarFeriadosAnuais(@PathVariable Integer idFeriado) {
+	public FeriadoDTO recuperarFeriado(@PathVariable Integer idFeriado) {
 		return this.feriadoService.obterFeriadoPorId(idFeriado);
 	}
 
 	@GetMapping
-	public List<FeriadoDTO> recuperarFeriadosPorAno() {
+	public List<FeriadoDTO> recuperarFeriados() {
 
 		return this.feriadoService.obterFeriados();
 	}
 
-//	@GetMapping("/ano")
-//	public FeriadoDTO recuperarFeriadosPorAno(@RequestParam Integer anoFeriado) {
-//
-//		return this.feriadoService.obterFeriadoPorAno(anoFeriado);
-//	}
-//
-//	@PostMapping("/socket")
-//	public void getCallSocket(@RequestBody SocketDTO infoSocket) {
-//
-//		socket.comunicarChegada(infoSocket);
-//	}
+	@GetMapping("/year")
+	public List<FeriadoDTO> recuperarFeriadosPorAno(@RequestParam Integer anoFeriado) {
+
+		return this.feriadoService.obterFeriadosPorAno(anoFeriado);
+	}
+
+	@GetMapping("/city/{idMunicipio}")
+	public FeriadoDTO recuperarFeriadosPorMunicipio(@RequestParam Integer anoFeriado) {
+
+		return FeriadoDTO.builder().build();
+	}
+
+	@GetMapping("/state/{idUf}")
+	public FeriadoDTO recuperarFeriadosPorUf(@RequestParam Integer anoFeriado) {
+
+		return FeriadoDTO.builder().build();
+	}
+
+	@GetMapping("/type")
+	public FeriadoDTO recuperarFeriadosPorTipo(@RequestParam Integer anoFeriado) {
+
+		return FeriadoDTO.builder().build();
+	}
+
+	@GetMapping("/filters")
+	public FeriadoDTO filtrarFeriados(@RequestParam Integer anoFeriado) {
+
+		return FeriadoDTO.builder().build();
+	}
+
+	@PostMapping("/socket")
+	public void getCallSocket(@RequestBody SocketDTO infoSocket) {
+
+		socket.comunicarChegada(infoSocket);
+	}
 }

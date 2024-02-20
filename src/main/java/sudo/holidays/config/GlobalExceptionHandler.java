@@ -58,13 +58,13 @@ public class GlobalExceptionHandler {
         return ResponseEntity.ofNullable(apiError);
     }
 
-    @ExceptionHandler({Exception.class})
-    public ResponseEntity<Object> handleStudentNotFoundException(Exception exception) {
-
-        return ResponseEntity
-                .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(exception);
-    }
+//    @ExceptionHandler({Exception.class})
+//    public ResponseEntity<Object> handleStudentNotFoundException(Exception exception) {
+//
+//        return ResponseEntity
+//                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+//                .body(exception);
+//    }
 
     private String getPathException(HandlerMethod handlerMethod) {
         return new StringBuilder().append(handlerMethod.getBeanType().getName()).toString();

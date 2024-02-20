@@ -1,5 +1,6 @@
 package sudo.holidays.entity;
 
+import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
 
 import java.time.LocalDate;
@@ -34,7 +35,7 @@ public class Feriado {
 	private LocalDate dataFeriado;
 	
 	@JoinColumn(name = "USUARIO")
-	@ManyToOne
+	@ManyToOne(fetch = LAZY)
 	private Usuario usuario;
 	
 	@Column(name = "DATA_INCLUSAO")
