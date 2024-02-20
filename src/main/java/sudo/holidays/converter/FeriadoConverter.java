@@ -1,4 +1,4 @@
-package sudo.holidays.service;
+package sudo.holidays.converter;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -25,6 +25,14 @@ public class FeriadoConverter {
                 .tipoFeriado(feriado.tipoFeriado())
                 .flagPontoFacultativo(feriado.flagPontoFacultativo())
                 .build();
+    }
+
+    public Feriado toFeriado(FeriadoDTO feriado, Integer id) {
+
+        final var feriadoConvertido = toFeriado(feriado);
+        feriadoConvertido.setId(id);
+
+        return feriadoConvertido;
     }
 
     public FeriadoDTO toFeriadoDTO(Feriado retorno) {

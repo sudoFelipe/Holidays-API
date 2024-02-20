@@ -8,9 +8,12 @@ import lombok.Builder;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public record UsuarioDTO(
 
-        @NotNull
+        @NotNull(message = "campo nome é obrigatório")
+        String nome,
+
+        @NotNull(message = "campo login é obrigatório")
         String login,
 
-        @NotNull
+        @NotNull(message = "campo senha é obrigatório")
         String senha
 ) {}

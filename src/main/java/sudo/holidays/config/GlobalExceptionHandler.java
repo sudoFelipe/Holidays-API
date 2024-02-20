@@ -16,22 +16,19 @@ import org.springframework.web.reactive.result.method.annotation.ResponseEntityE
 import sudo.holidays.dto.FeriadoDTO;
 import sudo.holidays.exception.ApiError;
 import sudo.holidays.exception.ErrorField;
+import sudo.holidays.exception.FeriadoNotFoundException;
 import sudo.holidays.exception.UsuarioNotFoundException;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
-import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
+import static org.springframework.http.HttpStatus.*;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @Value("${application.name}")
-    private String applicationName;
-
     @ExceptionHandler({WebExchangeBindException.class, CodecException.class})
-    public ResponseEntity<Object> handleInputFields(WebExchangeBindException ex) {
+    public ResponseEntity<Object> handleInputFields(WebExchangeBindException ex, HandlerMethod handlerMethod) {
 
         final var lsErros = new ArrayList<ErrorField>();
 
@@ -42,18 +39,18 @@ public class GlobalExceptionHandler {
         final var apiError = ApiError.builder()
                 .status(BAD_REQUEST)
                 .message("O servidor não pode processar a requisição.")
-                .path(ex.getLocalizedMessage())
+                .path(getPathException(handlerMethod))
                 .errors(lsErros)
                 .build();
 
         return ResponseEntity.ofNullable(apiError);
     }
 
-    @ExceptionHandler(UsuarioNotFoundException.class)
-    public ResponseEntity<Object> handleUsuarioNotFoundException(UsuarioNotFoundException ex, HandlerMethod handlerMethod) {
+    @ExceptionHandler({UsuarioNotFoundException.class, FeriadoNotFoundException.class})
+    public ResponseEntity<Object> handleUsuarioNotFoundException(Exception ex, HandlerMethod handlerMethod) {
 
         final var apiError = ApiError.builder()
-                .status(INTERNAL_SERVER_ERROR)
+                .status(NOT_FOUND)
                 .message(ex.getMessage())
                 .path(getPathException(handlerMethod))
                 .build();
@@ -70,10 +67,6 @@ public class GlobalExceptionHandler {
     }
 
     private String getPathException(HandlerMethod handlerMethod) {
-        return new StringBuilder()
-                .append(applicationName)
-                .append("/")
-                .append(handlerMethod.getMethod().getName())
-                .toString();
+        return new StringBuilder().append(handlerMethod.getBeanType().getName()).toString();
     }
 }

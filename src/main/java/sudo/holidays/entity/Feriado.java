@@ -5,21 +5,19 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import sudo.holidays.enums.EnumTipoFeriado;
 
 @Data
 @Entity
 @Table(name = "Feriado")
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Feriado {
 
 	@Id
@@ -43,6 +41,7 @@ public class Feriado {
 	private LocalDateTime dataInclusao;
 	
 	@Column(name = "TP_FERIADO")
+	@Enumerated(EnumType.STRING)
 	private EnumTipoFeriado tipoFeriado;
 
 	@Column(name = "FL_PONTO_FACULTATIVO")
