@@ -11,12 +11,10 @@ import sudo.holidays.converter.FeriadoConverter;
 import sudo.holidays.docs.FeriadoDocumentation;
 import sudo.holidays.dto.FeriadoDTO;
 import sudo.holidays.dto.SocketDTO;
-import sudo.holidays.entity.Feriado;
 import sudo.holidays.implementation.FeriadoServiceImp;
 import sudo.holidays.service.SocketService;
 
 import java.time.LocalDate;
-import java.time.Month;
 import java.util.List;
 
 @RestController
@@ -71,9 +69,9 @@ public class FeriadoController extends FeriadoDocumentation {
 	}
 
 	@GetMapping("/city/{idMunicipio}")
-	public FeriadoDTO recuperarFeriadosPorMunicipio(@RequestParam Integer anoFeriado) {
+	public List<FeriadoDTO> recuperarFeriadosPorMunicipio(@RequestParam Integer idMunicipio) {
 
-		return FeriadoDTO.builder().build();
+		return this.feriadoService.obterFeriadosPorMunicipio(idMunicipio);
 	}
 
 	@GetMapping("/state/{idUf}")

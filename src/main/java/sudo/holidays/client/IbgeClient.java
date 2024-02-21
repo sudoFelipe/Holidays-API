@@ -15,6 +15,6 @@ public interface IbgeClient {
     @GetExchange("/estados")
     List<UnidadeFederativaDTO> getUfs();
 
-    @GetExchange("/estados/{id}/municipios")
-    List<UnidadeFederativaDTO> getUfPorId(@PathVariable Integer id);
+    @GetExchange("/estados/{id}")
+    UnidadeFederativaDTO getUfPorId(@PathVariable Integer id);
 }

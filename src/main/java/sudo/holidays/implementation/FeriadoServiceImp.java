@@ -12,7 +12,6 @@ import sudo.holidays.service.FeriadoService;
 
 import java.time.LocalDate;
 import java.time.Month;
-import java.time.Year;
 import java.util.List;
 
 @Service
@@ -60,35 +59,45 @@ public class FeriadoServiceImp implements FeriadoService {
 
     public List<FeriadoDTO> obterFeriados() {
 
-        final var feriados = buscarFeriadosDTO();
+        final var feriados = buscarFeriados();
 
-        if (feriados.isEmpty())
-            throw new FeriadoNotFoundException();
-
-        return feriados.stream()
-                .map(converter::toFeriadoDTO)
-                .toList();
-    }
-
-    public List<FeriadoDTO> obterFeriadosPorAno(Integer ano) {
-
-        final var feriados = buscarFeriadosDTOPorAno(ano);
-
-        if (feriados.isEmpty())
-            throw new FeriadoNotFoundException();
+        validarExistenciaFeriados(feriados);
 
         return converter.toFeriadoDTO(feriados);
     }
 
-    private List<Feriado> buscarFeriadosDTO() {
+    public List<FeriadoDTO> obterFeriadosPorAno(Integer ano) {
+
+        final var feriados = buscarFeriadosPorAno(ano);
+
+        validarExistenciaFeriados(feriados);
+
+        return converter.toFeriadoDTO(feriados);
+    }
+
+    public List<FeriadoDTO> obterFeriadosPorMunicipio(Integer idMunicipio) {
+
+        final var feriados = this.repository.findByMunicipio(idMunicipio);
+
+        validarExistenciaFeriados(feriados);
+
+        return converter.toFeriadoDTO(feriados);
+    }
+
+    private List<Feriado> buscarFeriados() {
         return this.repository.findAll(Sort.by(Sort.Direction.DESC, "dataFeriado"));
     }
 
-    private List<Feriado> buscarFeriadosDTOPorAno(Integer year) {
+    private List<Feriado> buscarFeriadosPorAno(Integer year) {
 
         final var dataInicial = LocalDate.of(year, Month.JANUARY, LocalDate.MIN.getDayOfMonth());
         final var dataFinal = LocalDate.of(year, Month.DECEMBER, LocalDate.MAX.getDayOfMonth());
 
         return this.repository.findByPeriod(dataInicial, dataFinal);
+    }
+
+    private static void validarExistenciaFeriados(List<Feriado> feriados) {
+        if (feriados.isEmpty())
+            throw new FeriadoNotFoundException();
     }
 }
