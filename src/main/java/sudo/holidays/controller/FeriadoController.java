@@ -11,6 +11,7 @@ import sudo.holidays.converter.FeriadoConverter;
 import sudo.holidays.docs.FeriadoDocumentation;
 import sudo.holidays.dto.FeriadoDTO;
 import sudo.holidays.dto.SocketDTO;
+import sudo.holidays.enums.EnumTipoFeriado;
 import sudo.holidays.implementation.FeriadoServiceImp;
 import sudo.holidays.service.SocketService;
 
@@ -75,21 +76,26 @@ public class FeriadoController extends FeriadoDocumentation {
 	}
 
 	@GetMapping("/state/{idUf}")
-	public FeriadoDTO recuperarFeriadosPorUf(@RequestParam Integer anoFeriado) {
+	public List<FeriadoDTO> recuperarFeriadosPorUf(@RequestParam Integer idUf) {
 
-		return FeriadoDTO.builder().build();
+		return this.feriadoService.obterFeriadosPorUf(idUf);
 	}
 
 	@GetMapping("/type")
-	public FeriadoDTO recuperarFeriadosPorTipo(@RequestParam Integer anoFeriado) {
+	public List<FeriadoDTO> recuperarFeriadosPorTipo(@RequestParam EnumTipoFeriado tipoFeriado) {
 
-		return FeriadoDTO.builder().build();
+		return this.feriadoService.obterFeriadosPorTipo(tipoFeriado);
 	}
 
 	@GetMapping("/filters")
-	public FeriadoDTO filtrarFeriados(@RequestParam Integer anoFeriado) {
+	public List<FeriadoDTO> filtrarFeriados(
+			@RequestParam(required = true) EnumTipoFeriado tipoFeriado,
+			@RequestParam(required = false) Integer anoFeriado,
+			@RequestParam(required = false) Integer idUf,
+			@RequestParam(required = false) Integer idMunicipio,
+			@RequestParam(required = false) Boolean flagPontoFacultativo) {
 
-		return FeriadoDTO.builder().build();
+		return this.feriadoService.recuperarFeriadosPorFiltro(tipoFeriado, anoFeriado, idUf, idMunicipio, flagPontoFacultativo);
 	}
 
 	@PostMapping("/socket")

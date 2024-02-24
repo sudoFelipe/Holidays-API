@@ -6,6 +6,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 import sudo.holidays.dto.FeriadoDTO;
 import sudo.holidays.entity.Feriado;
+import sudo.holidays.enums.EnumTipoFeriado;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -21,4 +22,8 @@ public interface FeriadoRepository extends JpaRepository<Feriado, Integer>, Pagi
     List<Feriado> findByPeriod(LocalDate start, LocalDate end);
 
     List<Feriado> findByMunicipio(Integer idMunicipio);
+
+    List<Feriado> findByUf(Integer idUf);
+
+    List<Feriado> findByTipoFeriado(EnumTipoFeriado tipoFeriado);
 }

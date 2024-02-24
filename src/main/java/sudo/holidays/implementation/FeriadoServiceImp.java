@@ -5,13 +5,16 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import sudo.holidays.converter.FeriadoConverter;
 import sudo.holidays.dto.FeriadoDTO;
+import sudo.holidays.dto.FiltroFeriadoDTO;
 import sudo.holidays.entity.Feriado;
+import sudo.holidays.enums.EnumTipoFeriado;
 import sudo.holidays.exception.FeriadoNotFoundException;
 import sudo.holidays.repository.FeriadoRepository;
 import sudo.holidays.service.FeriadoService;
 
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -84,6 +87,24 @@ public class FeriadoServiceImp implements FeriadoService {
         return converter.toFeriadoDTO(feriados);
     }
 
+    public List<FeriadoDTO> obterFeriadosPorUf(Integer idUf) {
+
+        final var feriados = this.repository.findByUf(idUf);
+
+        validarExistenciaFeriados(feriados);
+
+        return converter.toFeriadoDTO(feriados);
+    }
+
+    public List<FeriadoDTO> obterFeriadosPorTipo(EnumTipoFeriado tipoFeriado) {
+
+        final var feriados = this.repository.findByTipoFeriado(tipoFeriado);
+
+        validarExistenciaFeriados(feriados);
+
+        return converter.toFeriadoDTO(feriados);
+    }
+
     private List<Feriado> buscarFeriados() {
         return this.repository.findAll(Sort.by(Sort.Direction.DESC, "dataFeriado"));
     }
@@ -99,5 +120,22 @@ public class FeriadoServiceImp implements FeriadoService {
     private static void validarExistenciaFeriados(List<Feriado> feriados) {
         if (feriados.isEmpty())
             throw new FeriadoNotFoundException();
+    }
+
+    public List<FeriadoDTO> recuperarFeriadosPorFiltro(EnumTipoFeriado tipoFeriado, Integer anoFeriado, Integer idUf, Integer idMunicipio, Boolean flagPontoFacultativo) {
+
+        final var filtro = montarFiltro(tipoFeriado, anoFeriado, idUf, idMunicipio, flagPontoFacultativo);
+
+        return new ArrayList<>();
+    }
+
+    private FiltroFeriadoDTO montarFiltro(EnumTipoFeriado tipoFeriado, Integer anoFeriado, Integer idUf, Integer idMunicipio, Boolean flagPontoFacultativo) {
+        return FiltroFeriadoDTO.builder()
+                .tipoFeriado(tipoFeriado)
+                .anoFeriado(anoFeriado)
+                .idUf(idUf)
+                .idMunicipio(idMunicipio)
+                .flagPontoFacultativo(flagPontoFacultativo)
+                .build();
     }
 }
